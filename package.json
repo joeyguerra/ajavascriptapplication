@@ -1,0 +1,38 @@
+{
+  "name": "ajavascriptapplication",
+  "version": "1.0.0",
+  "description": "Building a javascript application to explore how a codebase evolves using the javascript ecosystem.",
+  "main": "index.mjs",
+  "engines": {
+    "node": "14.15.x"
+  },
+  "scripts": {
+    "test": "mocha examples/**/*.mjs --parallel",
+    "test:dev": "mocha --watch --parallel",
+    "start": "node index.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joeyguerra/ajavascriptapplication.git"
+  },
+  "keywords": [
+    "javascript",
+    "learning",
+    "webapp",
+    "web",
+    "service",
+    "html",
+    "css",
+    "get",
+    "good"
+  ],
+  "author": "Joey Guerra",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/joeyguerra/ajavascriptapplication/issues"
+  },
+  "homepage": "https://github.com/joeyguerra/ajavascriptapplication#readme",
+  "devDependencies": {
+    "mocha": "^8.2.1"
+  }
+}
