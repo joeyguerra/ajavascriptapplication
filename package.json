@@ -33,6 +33,7 @@
   },
   "homepage": "https://github.com/joeyguerra/ajavascriptapplication#readme",
   "devDependencies": {
+    "jsdom": "^16.4.0",
     "mocha": "^8.2.1"
   }
 }
