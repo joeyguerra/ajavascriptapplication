@@ -1,49 +1,14 @@
 import assert from "assert"
+import fs from "fs"
 import { JSDOM } from "jsdom"
-
-const htmlLayoutTemplate = `
-<!DOCTYPE html>
-<html>
-    <head><title>Testing</title></head>
-    <body>
-        <header></header>
-        <main></main>
-        <footer></footer>
-    </body>
-</html>
-`
-class ObservableList extends Array {
-    constructor(){
-        super()
-        this.observers = {}
-    }
-    notify(key, old, value){
-        if(!this.observers[key]) return
-        this.observers[key].forEach(observer => observer.update(key, old, value))
-    }
-    observe(key, observer){
-        if(!this.observers[key]) this.observers[key] = []
-        this.observers[key].push(observer)
-    }
-    push(item){
-        super.push(item)
-        this.notify("push", null, item)
-    }
-}
-
-class LiView {
-    constructor(container, model){
-        this.model = model
-        this.container = container
-    }
-}
-class View {
+import ObservableList from "../ObservableList.mjs"
+import View from "../View.mjs"
+import LiView from "../LiView.mjs"
+let htmlLayoutTemplate = ""
+class ULView extends View {
     constructor(delegate, container, model){
-        this.delegate = delegate
-        this.container = container
-        this.model = model
+        super(delegate, container, model)
         this.model.observe("push", this)
-        this.views = []
     }
     update(key, old, value){
         const li = this.delegate.createElement("li")
@@ -53,6 +18,9 @@ class View {
     }
 }
 describe("Starting out", ()=>{
+    before(async ()=>{
+        htmlLayoutTemplate = await fs.promises.readFile("./examples/layout.html", "utf8")
+    })
     it("Example setup", ()=>{
         const dom = new JSDOM(htmlLayoutTemplate)
         dom.window.document.querySelector("main").innerHTML = `<ul id="listOfTodos"></ul>`
@@ -62,7 +30,7 @@ describe("Starting out", ()=>{
         const dom = new JSDOM(htmlLayoutTemplate)
         dom.window.document.querySelector("main").innerHTML = `<ul id="listOfTodos"></ul>`
         const model = new ObservableList()
-        new View({createElement(tag){
+        new ULView({createElement(tag){
             return dom.window.document.createElement(tag)
         }}, dom.window.listOfTodos, model)
         model.push({
